@@ -8,7 +8,7 @@
       </div>
       
       <div id="form">
-        <form id="registro" @submit="registrarUsuario">
+        <form id="registro" @submit="registrarUsuario()">
           <input type="email" placeholder="Correo electrónico" id="email" v-model="email" required>
           <input type="password" placeholder="Contraseña" id="pass1" v-model="pass1" required>
           <input type="password" placeholder="Repetír contraseña" id="pass2" required>
@@ -28,37 +28,46 @@
   
   <script setup>
 import { ref } from 'vue';
-const email = ref('');
-const pass1 = ref('');
 
-const registrarUsuario = async () => {
+let email = ref('');
+let pass1 = ref(null);
+
+async function registrarUsuario() {
+
+  event.preventDefault();
   try {
     const data = {
       email: email.value,
-      password: pass1.value,
+      password: pass1.value
     };
 
-    const response = await fetch('http://localhost:3000/registrar', {
+    fetch('http://localhost:3000/registrar', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
+    }).then((response) => {
+      if (response.ok) {
+        // Registro exitoso
+        console.log('Usuario registrado con éxito');
+      } else {
+        // Manejar errores
+        response.json().then((responseData) => {
+          console.error('Error al registrar el usuario:', responseData.message);
+        });
+      }
+    }).catch((error) => {
+      // Manejar errores de red u otros errores
+      console.error(error);
     });
-
-    if (response.ok) {
-      // Registro exitoso
-      console.log('Usuario registrado con éxito');
-    } else {
-      // Manejar errores
-      console.error('Error al registrar el usuario');
-    }
   } catch (error) {
     // Manejar errores de red u otros errores
     console.error(error);
   }
-};
+}
 </script>
+
 
 <style>
 
