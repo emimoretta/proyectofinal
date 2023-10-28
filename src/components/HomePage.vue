@@ -7,28 +7,20 @@
         <p>Pensá, escribí, compartí.</p>
       </div>
       
-
       <div id="form">
-        
         <form id="registro" @submit="registrarUsuario">
-
           <input type="email" placeholder="Correo electrónico" id="email" v-model="email" required>
-
           <input type="password" placeholder="Contraseña" id="pass1" v-model="pass1" required>
-
-          <input type="password" placeholder="Repetír contraseña" id="pass2" v-model="pass2" required>
-
+          <input type="password" placeholder="Repetír contraseña" id="pass2" required>
           <button type="submit">Registrate</button>
-
+          <hr>
+          <button class="black" type="submit">Ya tengo cuenta</button>
         </form>
-
       </div>
 
     </div>
 
     <div id="footer">
-
-      
 
     </div>
 
@@ -37,16 +29,16 @@
   <script setup>
 import { ref } from 'vue';
 const email = ref('');
-const password = ref('');
+const pass1 = ref('');
 
 const registrarUsuario = async () => {
   try {
     const data = {
       email: email.value,
-      password: password.value,
+      password: pass1.value,
     };
 
-    const response = await fetch('http://localhost:8080/registrar', {
+    const response = await fetch('http://localhost:3000/registrar', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -130,6 +122,10 @@ const registrarUsuario = async () => {
     border-radius: 10px;
     border-style: none;
     font-size: larger;
+  }
+
+  .black{
+    background-color: black;
   }
 
   #intro > p:nth-child(1){
