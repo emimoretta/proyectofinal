@@ -9,28 +9,41 @@
     </head>
 
     <body>
-        
-        <input type="checkbox" id="check">
-        <label for="check">
-            <i class="fas fa-bars" id="btn"></i>
-            <i class="fas fa-times" id="cancel"></i>
-        </label>
-        <div class="sidebar">
-            <header>Think.</header>
-            <ul>
-                <li><a href="#" class="side-inicio">Inicio</a></li>
-                <li><a href="#" class="side-perfil">Pefil</a></li>
-                <li><a href="#" class="side-config">Configuracion</a></li>
-                <li><a href="#" class="side-acerca">Acerca De</a></li>
-                <li><a href="#" class="side-salir">Salir</a></li>
-            </ul>
+        <!--sidebar-->
+        <div class="siderbar-div">
+            <input type="checkbox" id="check">
+            <label for="check">
+                <i class="fas fa-bars" id="btn"></i>
+                <i class="fas fa-times" id="cancel"></i>
+            </label>
+            <div class="sidebar">
+                <header>Think.</header>
+                <ul>
+                    <li><a href="#" class="side-inicio">Inicio</a></li>
+                    <li><a href="#" class="side-perfil">Pefil</a></li>
+                    <li><a href="#" class="side-config">Configuracion</a></li>
+                    <li><a href="#" class="side-acerca">Acerca De</a></li>
+                    <li><a href="#" class="side-salir">Salir</a></li>
+                </ul>
+            </div>
         </div>
-
-        <section></section>
+        <!--feed-->
+        <div class="feed">
+            <div class="feed__header">
+                <h2>Inicio</h2>
+            </div>
+            <div class="twitBox">
+                <form>
+                    <div class="twitBox__input">
+                        <input type="text" placeholder="Comparti algo con la comunidad">
+                    </div>
+                    <button class="twitBox__twitButton">Think</button>
+                </form>
+            </div>
+        </div>
+        
 
     </body>
-
-    
  
 </template>
 
@@ -77,7 +90,6 @@
 
     ul li:hover a{
         padding-left: 50px;
-        
     }
 
     #check{
@@ -117,5 +129,72 @@
     #check:checked ~ label #cancel{
         left: 195px;
     }
+
+    .feed{
+        margin-left: 250px;
+        flex: 0.5;
+        border-right: 1px solid #9442B2;
+        min-width: fit-content;
+        overflow-y: scroll;
+    }
+
+    .feed__header{
+        position: sticky;
+        top: 0;
+        background-color: white;
+        z-index: 100;
+        border: 7px solid #9442B2;
+        padding: 15px 20px;
+    }
+
+    .feed__header h2{
+        font-size: 20px;
+        font-weight: 800;
+    }
+
+    .feed::-webkit-scrollbar{
+        display: none;
+    }
+
+    .feed{
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .twitBox{
+        padding-bottom: 10px;
+        border-bottom: 8px solid #9442B2;
+        padding-right: 10px;
+    }
     
+    .twitBox form{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .twitBox__input {
+        display: flex;
+        padding: 20px;
+    }
+
+    .twitBox__input input{
+        flex: 1;
+        margin-left: 20px;
+        font-size: 20px;
+        border: none;
+        outline: none;
+    }
+
+    .twitBox__twitButton{
+        background-color: #9442B2;
+        border: none;
+        color: white;
+        font-weight: 900;
+        border-radius: 30px;
+        width: 100px;
+        height: 40px;
+        margin-top: 20px;
+        margin-left: auto;
+    }
+
 </style>
