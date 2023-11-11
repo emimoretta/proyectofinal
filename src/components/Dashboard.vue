@@ -1,11 +1,25 @@
 <script setup>
 import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 
-const { params } = useRoute();
-const usuario = ref(params.usuario);
+const router = useRouter();
+const store = useStore();
+const sesionActiva = ref(useStore().getters.getSesionActiva);
+const usuario = store.getters.getUsuario;
 
-console.log(usuario.value)
+const emailPartes = usuario.split('@');
+const nombreUsuario = emailPartes[0];
+
+console.log(usuario)
+
+const cerrarSesion = () => {
+  // Aquí puedes realizar cualquier lógica adicional antes de cerrar la sesión
+  store.commit('setSesionActiva', false);
+  store.commit('setUsuario', '');  // O cualquier valor predeterminado para el usuario
+  router.push({ name: 'home-page' });  // Redirige a la página de inicio de sesión o donde prefieras
+};
+
 
 </script>
 
@@ -26,7 +40,7 @@ console.log(usuario.value)
             <div class="sidebar">
                 <header>Think.</header>
                 <ul>
-                    <li><a href="#" class="side-inicio">Bienvenido {{ usuario }}</a></li>
+                    <li><a href="#" class="side-inicio">Bienvenido  {{ nombreUsuario}}</a></li>
                     <li><a href="#" class="side-inicio">Inicio</a></li>
                     <li><a href="#" class="side-perfil">Pefil</a></li>
                     <li><a href="#" class="side-config">Configuracion</a></li>
