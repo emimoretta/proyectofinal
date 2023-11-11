@@ -28,12 +28,16 @@
   
   <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 let email = ref('');
 let pass1 = ref(null);
 
-async function registrarUsuario() {
+const router = useRouter();
 
+async function registrarUsuario() {
+  
+  console.log("pasa por aca")
   event.preventDefault();
   try {
     const data = {
@@ -51,6 +55,7 @@ async function registrarUsuario() {
       if (response.ok) {
         // Registro exitoso
         console.log('Usuario registrado con éxito');
+        router.push('/dash-board');
       } else {
         // Manejar errores
         response.json().then((responseData) => {
@@ -70,6 +75,7 @@ async function registrarUsuario() {
 
 
 <style>
+
 
 
   html{
@@ -131,6 +137,7 @@ async function registrarUsuario() {
     border-radius: 10px;
     border-style: none;
     font-size: larger;
+
   }
 
   .black{

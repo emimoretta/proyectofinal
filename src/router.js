@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from './components/HomePage.vue';
 import InicioSesion from './components/InicioSesion.vue';
 import TwitsPanel from './components/TwitsPanel.vue';
-import DashBoard from './components/DashBoard.vue';
+import DashBoard from './components/Dashboard.vue';
 
 const routes = [
   { path: '/', component: HomePage },
