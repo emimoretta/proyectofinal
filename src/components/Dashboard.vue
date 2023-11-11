@@ -1,4 +1,11 @@
 <script setup>
+import { ref } from 'vue';
+import { useRoute } from 'vue-router';
+
+const { params } = useRoute();
+const usuario = ref(params.usuario);
+
+console.log(usuario.value)
 
 </script>
 
@@ -19,11 +26,12 @@
             <div class="sidebar">
                 <header>Think.</header>
                 <ul>
+                    <li><a href="#" class="side-inicio">Bienvenido {{ usuario }}</a></li>
                     <li><a href="#" class="side-inicio">Inicio</a></li>
                     <li><a href="#" class="side-perfil">Pefil</a></li>
                     <li><a href="#" class="side-config">Configuracion</a></li>
                     <li><a href="#" class="side-acerca">Acerca De</a></li>
-                    <li><a href="#" class="side-salir">Salir</a></li>
+                    <li class="side-salir" v-if="sesionActiva" @click="cerrarSesion">Salir</li>
                 </ul>
             </div>
         </div>

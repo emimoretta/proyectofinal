@@ -7,15 +7,26 @@
         <p>Pensá, escribí, compartí.</p>
       </div>
       
-      <div id="form">
-        <form id="registro" @submit="registrarUsuario()">
+      <div v-if="!logear" id="form">
+        <form id="registro" @submit.prevent="registrarUsuario">
           <input type="email" placeholder="Correo electrónico" id="email" v-model="email" required>
           <input type="password" placeholder="Contraseña" id="pass1" v-model="pass1" required>
           <input type="password" placeholder="Repetír contraseña" id="pass2" required>
           <button type="submit">Registrate</button>
           <hr>
-          <button class="black" type="submit">Ya tengo cuenta</button>
         </form>
+        <button class="black" @click="cambiarForm()">Ya tengo cuenta</button>
+      </div>
+
+      <div v-if="logear" id="form">
+        <form id="login" @submit.prevent="iniciarSesion">
+          <input type="email" placeholder="Correo electrónico" id="email" v-model="email" required>
+          <input type="password" placeholder="Contraseña" id="pass1" v-model="pass1" required>
+          <button type="submit">Iniciar Sesion</button>
+          <hr>
+          
+        </form>
+        <button class="black" @click="cambiarForm()">Registrarme</button>
       </div>
 
     </div>
@@ -30,47 +41,73 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-let email = ref('');
-let pass1 = ref(null);
-
 const router = useRouter();
 
-async function registrarUsuario() {
-  
-  console.log("pasa por aca")
-  event.preventDefault();
+const email = ref('');
+const pass1 = ref('');
+const logear = ref(false);
+
+
+const cambiarForm = () => {
+  logear.value = !logear.value;
+};
+
+const registrarUsuario = async () => {
   try {
     const data = {
       email: email.value,
-      password: pass1.value
+      password: pass1.value,
     };
 
-    fetch('http://localhost:3000/registrar', {
+    const response = await fetch('http://localhost:3000/registrar', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
-    }).then((response) => {
-      if (response.ok) {
-        // Registro exitoso
-        console.log('Usuario registrado con éxito');
-        router.push('/dash-board');
-      } else {
-        // Manejar errores
-        response.json().then((responseData) => {
-          console.error('Error al registrar el usuario:', responseData.message);
-        });
-      }
-    }).catch((error) => {
-      // Manejar errores de red u otros errores
-      console.error(error);
     });
+
+    if (response.ok) {
+      // Registro exitoso, redirigir a dash-board
+      router.push('/dash-board');
+    } else {
+      const responseData = await response.json();
+      console.error('Error al registrar el usuario:', responseData.message);
+    }
   } catch (error) {
-    // Manejar errores de red u otros errores
     console.error(error);
   }
-}
+};
+
+const iniciarSesion = async () => {
+  try {
+    const data = {
+      email: email.value,
+      password: pass1.value,
+    };
+
+    const response = await fetch('http://localhost:3000/iniciar-sesion', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.ok) {
+      console.log("salio todo bien, redirigiendo")
+      router.push({ name: 'dash-board', params: { usuario: email } });
+      console.log(email.value)
+    } else {
+      const responseData = await response.json();
+      console.error('Error al iniciar sesión:', responseData.message);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
 </script>
 
 
