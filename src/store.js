@@ -2,32 +2,28 @@ import { createStore } from 'vuex';
 
 const store = createStore({
   state: {
-    usuario: null, // Aquí almacenarás la información del usuario
-    sesionActiva: false, // Un indicador de si el usuario tiene una sesión activa
+    sesionActiva: false,
+    usuario: '',
   },
   mutations: {
-    setUsuario(state, usuario) {
-      state.usuario = usuario;
-    },
     setSesionActiva(state, valor) {
       state.sesionActiva = valor;
     },
+    setUsuario(state, usuario) {
+      state.usuario = usuario;
+    },
   },
   actions: {
-    iniciarSesion({ commit }, usuario) {
-      // Lógica para iniciar sesión (por ejemplo, enviar datos al servidor)
-      commit('setUsuario', usuario);
+    iniciarSesion({ commit }, { email }) {
+      // Lógica para iniciar sesión (puedes hacer una solicitud HTTP aquí)
+      // Supongamos que la autenticación es exitosa
       commit('setSesionActiva', true);
-    },
-    cerrarSesion({ commit }) {
-      // Lógica para cerrar sesión
-      commit('setUsuario', null);
-      commit('setSesionActiva', false);
+      commit('setUsuario', email);
     },
   },
   getters: {
-    usuario: (state) => state.usuario,
-    sesionActiva: (state) => state.sesionActiva,
+    getSesionActiva: (state) => state.sesionActiva,
+    getUsuario: (state) => state.usuario,
   },
 });
 

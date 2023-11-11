@@ -40,8 +40,10 @@
   <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
 const router = useRouter();
+const store = useStore();
 
 const email = ref('');
 const pass1 = ref('');
@@ -68,8 +70,10 @@ const registrarUsuario = async () => {
     });
 
     if (response.ok) {
-      // Registro exitoso, redirigir a dash-board
+      store.commit('setSesionActiva', true);
+      store.commit('setUsuario', email.value);
       router.push('/dash-board');
+
     } else {
       const responseData = await response.json();
       console.error('Error al registrar el usuario:', responseData.message);
@@ -95,7 +99,9 @@ const iniciarSesion = async () => {
     });
 
     if (response.ok) {
-      console.log("salio todo bien, redirigiendo")
+      store.commit('setSesionActiva', true);
+      store.commit('setUsuario', email.value);
+
       router.push({ name: 'dash-board', params: { usuario: email } });
       console.log(email.value)
     } else {
