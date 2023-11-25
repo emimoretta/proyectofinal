@@ -4,6 +4,7 @@ import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import ListaTwits from './ListaTwits.vue';
 
+
 const router = useRouter();
 const store = useStore();
 const sesionActiva = ref(useStore().getters.getSesionActiva);
@@ -61,7 +62,13 @@ const crearTwit = async (texto) => {
 
 const handleThinkButtonClick = async () => {
   const texto = textoInput.value;
-  await crearTwit(texto);
+  if(texto!=""){
+    await crearTwit(texto);
+    
+  }
+   else
+    alert("No puede dejar el campo vacio")
+
   // Puedes limpiar el input después de enviar el twit si lo deseas
   textoInput.value = '';
 };
@@ -90,7 +97,9 @@ const handleThinkButtonClick = async () => {
                     <li><a href="#" class="side-perfil">Pefil</a></li>
                     <li><a href="#" class="side-config">Configuracion</a></li>
                     <li><a href="#" class="side-acerca">Acerca De</a></li>
-                    <li class="side-salir" v-if="sesionActiva" @click="cerrarSesion">Salir</li>
+                    <li class="side" v-if="sesionActiva" @click="cerrarSesion">
+                        <a href="#" class="side-acerca">Salir</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -111,10 +120,8 @@ const handleThinkButtonClick = async () => {
                 <lista-twits></lista-twits>
             </div>
         </div>
-
-       
-        
-
+  
+    
     </body>
  
 </template>
@@ -208,6 +215,7 @@ const handleThinkButtonClick = async () => {
         background-color: white;
         min-width: fit-content;
         overflow-y: scroll;
+        max-width: 600px;
     }
 
     .feed__header{
