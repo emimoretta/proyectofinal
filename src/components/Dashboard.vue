@@ -2,6 +2,7 @@
 import { ref, onBeforeMount } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import ListaTwits from './ListaTwits.vue';
 
 const router = useRouter();
 const store = useStore();
@@ -25,6 +26,7 @@ onBeforeMount(() => {
     router.push({ name: 'home-page' });
   }
 });
+
 
 const cerrarSesion = () => {
   // Aquí puedes realizar cualquier lógica adicional antes de cerrar la sesión
@@ -62,6 +64,7 @@ const handleThinkButtonClick = async () => {
   await crearTwit(texto);
   // Puedes limpiar el input después de enviar el twit si lo deseas
   textoInput.value = '';
+  router.push({ name: 'dash-board'});
 };
 
 </script>
@@ -84,7 +87,7 @@ const handleThinkButtonClick = async () => {
                 <header>Think.</header>
                 <ul>
                     <li><a href="#" class="side-inicio">Bienvenido  {{ nombreUsuario}}</a></li>
-                    <li><a href="#" class="side-inicio">Inicio</a></li>
+                    <li><a href="/dash-board" class="side-inicio">Inicio</a></li>
                     <li><a href="#" class="side-perfil">Pefil</a></li>
                     <li><a href="#" class="side-config">Configuracion</a></li>
                     <li><a href="#" class="side-acerca">Acerca De</a></li>
@@ -105,7 +108,12 @@ const handleThinkButtonClick = async () => {
                     <button @click="handleThinkButtonClick" type="button" class="twitBox__twitButton">Think</button>
                 </form>
             </div>
+            <div>
+                <lista-twits></lista-twits>
+            </div>
         </div>
+
+       
         
 
     </body>
