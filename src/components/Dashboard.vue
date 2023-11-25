@@ -102,7 +102,7 @@ const handleThinkButtonClick = async () => {
                     <div class="twitBox__input">
                         <input v-model="textoInput" type="text" placeholder="Comparti algo con la comunidad">
                     </div>
-                    <button @click="handleThinkButtonClick"  class="twitBox__twitButton">Think</button>
+                    <button @click="handleThinkButtonClick" type="button" class="twitBox__twitButton">Think</button>
                 </form>
             </div>
         </div>
