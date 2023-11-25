@@ -57,7 +57,7 @@ const cambiarForm = () => {
 const registrarUsuario = async () => {
   try {
     const data = {
-      email: email.value,
+      email: email.value.toLocaleLowerCase(),
       password: pass1.value,
     };
 
@@ -86,7 +86,7 @@ const registrarUsuario = async () => {
 const iniciarSesion = async () => {
   try {
     const data = {
-      email: email.value,
+      email: email.value.toLocaleLowerCase(),
       password: pass1.value,
     };
 
@@ -99,11 +99,19 @@ const iniciarSesion = async () => {
     });
 
     if (response.ok) {
+      const responseData = await response.json();
+
       store.commit('setSesionActiva', true);
       store.commit('setUsuario', email.value);
 
+      const token = responseData.token;
+      localStorage.setItem('token', token);
+      console.log('Token recibido:', token);
+
+
       router.push({ name: 'dash-board', params: { usuario: email } });
       console.log(email.value)
+
     } else {
       const responseData = await response.json();
       console.error('Error al iniciar sesión:', responseData.message);

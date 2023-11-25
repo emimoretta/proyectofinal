@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onBeforeMount } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 
@@ -7,11 +7,24 @@ const router = useRouter();
 const store = useStore();
 const sesionActiva = ref(useStore().getters.getSesionActiva);
 const usuario = store.getters.getUsuario;
+const textoInput = ref('');
 
 const emailPartes = usuario.split('@');
 const nombreUsuario = emailPartes[0];
 
 console.log(usuario)
+
+onBeforeMount(() => {
+  // Recuperar el token del localStorage al cargar el componente
+  const token = localStorage.getItem('token');
+  if (token) {
+    // Realizar cualquier lógica adicional con el token si es necesario
+    console.log('Token recuperado:', token);
+  } else {
+    // Si no hay token, podrías redirigir al usuario al inicio de sesión
+    router.push({ name: 'home-page' });
+  }
+});
 
 const cerrarSesion = () => {
   // Aquí puedes realizar cualquier lógica adicional antes de cerrar la sesión
@@ -20,6 +33,36 @@ const cerrarSesion = () => {
   router.push({ name: 'home-page' });  // Redirige a la página de inicio de sesión o donde prefieras
 };
 
+const crearTwit = async (texto) => {
+  try {
+    const token = localStorage.getItem('token');
+
+    const response = await fetch('http://localhost:3000/crear-twit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ texto }),
+    });
+
+    if (response.ok) {
+      console.log('Twit creado con éxito');
+    } else {
+      const responseData = await response.json();
+      console.error('Error al crear el twit:', responseData.error);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const handleThinkButtonClick = async () => {
+  const texto = textoInput.value;
+  await crearTwit(texto);
+  // Puedes limpiar el input después de enviar el twit si lo deseas
+  textoInput.value = '';
+};
 
 </script>
 
@@ -57,9 +100,9 @@ const cerrarSesion = () => {
             <div class="twitBox">
                 <form>
                     <div class="twitBox__input">
-                        <input type="text" placeholder="Comparti algo con la comunidad">
+                        <input v-model="textoInput" type="text" placeholder="Comparti algo con la comunidad">
                     </div>
-                    <button class="twitBox__twitButton">Think</button>
+                    <button @click="handleThinkButtonClick"  class="twitBox__twitButton">Think</button>
                 </form>
             </div>
         </div>
@@ -155,7 +198,7 @@ const cerrarSesion = () => {
     .feed{
         margin-left: 250px;
         flex: 0.5;
-        border-right: 1px solid #9442B2;
+        background-color: white;
         min-width: fit-content;
         overflow-y: scroll;
     }
@@ -165,8 +208,9 @@ const cerrarSesion = () => {
         top: 0;
         background-color: white;
         z-index: 100;
-        border: 7px solid #9442B2;
+  
         padding: 15px 20px;
+        text-align: center;
     }
 
     .feed__header h2{
@@ -185,7 +229,7 @@ const cerrarSesion = () => {
 
     .twitBox{
         padding-bottom: 10px;
-        border-bottom: 8px solid #9442B2;
+        
         padding-right: 10px;
     }
     
