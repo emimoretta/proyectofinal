@@ -64,7 +64,6 @@ const handleThinkButtonClick = async () => {
   await crearTwit(texto);
   // Puedes limpiar el input después de enviar el twit si lo deseas
   textoInput.value = '';
-  router.push({ name: 'dash-board'});
 };
 
 </script>
