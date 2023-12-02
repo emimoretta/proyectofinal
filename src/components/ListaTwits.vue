@@ -1,19 +1,33 @@
 <template>
-    <div>
-      <h3 id="titulo">Tus Thinks:</h3>
-      <div v-for="twit in twits" :key="twit._id" class="twit-item">
-        {{ twit.texto }}
-        <br>
-        {{ formatFechaHora(twit.fechaHora)  }}
-        <!-- Puedes mostrar otros detalles del twit aquí -->
-      </div>
+  <div class="listadoTwits">
+    <h3 id="titulo">Tus Thinks:</h3>
+    <div v-for="twit in twits" :key="twit._id" class="twit-item" @click="mostrarTwitExpandido(twit)">
+      {{ twit.texto }}
+      <br>
+      {{ formatDateHora(twit.fechaHora) }}
     </div>
-  </template>
+
+    <!-- Agregamos el componente TwitExpandido y lo mostramos cuando hay un twit seleccionado -->
+
+    <TwitExpandido v-if="twitSeleccionado" :twit="twitSeleccionado" :formatFechaHora="formatDateHora" />
+
+  </div>
+
+</template>
   
   <script setup>
 import { ref, onMounted } from 'vue';
 
-const twits = ref([]);
+import TwitExpandido from './TwitExpandido.vue';
+
+
+const twits = ref([]); // Estado local para los twits
+const twitSeleccionado = ref(null); // Estado local para el twit seleccionado
+
+
+const mostrarTwitExpandido = (twit) => {
+  twitSeleccionado.value = twit;
+};
 
 const obtenerTwits = async () => {
   try {
@@ -42,7 +56,7 @@ onMounted(() => {
 });
 
 
-const formatFechaHora = (fechaHora) => {
+const formatDateHora = (fechaHora) => {
   const fecha = new Date(fechaHora);
   const dia = fecha.getDate().toString().padStart(2, '0');
   const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
@@ -75,4 +89,7 @@ margin: 10px auto 10px auto;
   #titulo{
     text-align: center;
   }
+
+ 
+
   </style>
