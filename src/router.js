@@ -1,14 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import store from '../src/store';
 import HomePage from './components/HomePage.vue';
-import TwitsPanel from './components/TwitsPanel.vue';
 import DashBoard from './components/Dashboard.vue';
 
 const routes = [
   { path: '/', name:'home-page', component: HomePage },
   { path: '/registrar', component: HomePage },
   { path: '/iniciar-sesion', component: HomePage },
-  { path: '/twits-panel', component: TwitsPanel},
+  
   {
     path: '/dash-board',
     name: 'dash-board',
